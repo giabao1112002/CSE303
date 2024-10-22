@@ -22,6 +22,7 @@ class EIUGIFT1 {
         }
         Arrays.sort(gifts);
         Arrays.sort(papers);
+        
         int i = 0, j = 0, count = 0;
         while (i < n && j < m) {
             if (papers[j] >= 2 * gifts[i] && papers[j] <= 3 * gifts[i]) {

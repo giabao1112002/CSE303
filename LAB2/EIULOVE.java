@@ -5,32 +5,23 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.StringTokenizer;
 
-class EIPAIR {
+class EIULOVE {
     static StringBuilder sb = new StringBuilder();
     static InputReader reader = new InputReader(System.in);
 
     public static void main(String[] args) {
-        reader = new InputReader(System.in);
-        int testcase = reader.nextInt();
-        for (int i = 0; i < testcase; i++) {
-            Map<Integer, Integer> map = new HashMap<>();
-            int numGifts = reader.nextInt();
-
-            for (int j = 0; j < numGifts; j++) {
-                int price = reader.nextInt();
-                map.put(price, map.getOrDefault(price, 0) + 1);
+        long numGifts = reader.nextLong();
+        long money = reader.nextLong();
+        long highestGift = -1;
+        for (long i = 0; i < numGifts; i++) {
+            long gift = reader.nextLong();
+            if (gift <= money && gift > highestGift) {
+                highestGift = gift;
             }
-            long count = 0;
-            for (long count1 : map.values()) {
-                count += (count1 * (count1 - 1)) / 2;
-            }
-            sb.append(count).append("\n");
         }
-        System.out.println(sb);
+        System.out.println(highestGift);
     }
 
     static class InputReader {
