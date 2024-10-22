@@ -3,31 +3,32 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 
-public class EISUBARRAY {
+class EIPAINTING {
     static StringBuilder sb = new StringBuilder();
     static InputReader reader = new InputReader(System.in);
 
     public static void main(String[] args) {
         int n = reader.nextInt();
-        int largestSum = 0;
-        int[] arr = new int[n];
+        HashMap<Integer, Integer> myMap = new HashMap<Integer, Integer>();
         for (int i = 0; i < n; i++) {
-            arr[i] = reader.nextInt();
-        }
-        for (int i = 0; i < arr.length - 1; i++) {
-            int total = arr[i];
-            for (int k = i + 1; k < arr.length; k++) {
-                total += arr[k];
-                if (Math.abs(total) > largestSum) {
-                    largestSum = Math.abs(total);
-                }
+            int value = reader.nextInt();
+            if (!myMap.containsKey(value)) {
+                myMap.put(value, 1);
+            } else {
+                myMap.put(value, myMap.get(value) + 1);
             }
         }
-        sb.append(largestSum);
+        int numRepeat = 0;
+        for (int num : myMap.values()) {
+            if (numRepeat < num) {
+                numRepeat = num;
+            }
+        }
+        sb.append(n-numRepeat);
         System.out.println(sb);
-
     }
 
     static class InputReader {

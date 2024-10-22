@@ -5,32 +5,18 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class EISUBARRAY {
+public class EIQUEENS {
     static StringBuilder sb = new StringBuilder();
     static InputReader reader = new InputReader(System.in);
-
     public static void main(String[] args) {
-        int n = reader.nextInt();
-        int largestSum = 0;
-        int[] arr = new int[n];
-        for (int i = 0; i < n; i++) {
-            arr[i] = reader.nextInt();
-        }
-        for (int i = 0; i < arr.length - 1; i++) {
-            int total = arr[i];
-            for (int k = i + 1; k < arr.length; k++) {
-                total += arr[k];
-                if (Math.abs(total) > largestSum) {
-                    largestSum = Math.abs(total);
-                }
-            }
-        }
-        sb.append(largestSum);
-        System.out.println(sb);
+        char[][] board = new char[8][8];
 
+        for (int i = 0; i < 8; i++) {
+            String line = reader.next();
+            board[i] = line.toCharArray();
+        }
     }
-
-    static class InputReader {
+     static class InputReader {
         StringTokenizer tokenizer;
         BufferedReader reader;
         String token;
