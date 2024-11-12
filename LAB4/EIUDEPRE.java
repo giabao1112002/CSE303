@@ -7,16 +7,33 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-class EIPMOD {
+public class EIUDEPRE {
     static StringBuilder sb = new StringBuilder();
     static InputReader reader = new InputReader(System.in);
 
     public static void main(String[] args) {
-        int x = reader.nextInt();
-        int n = reader.nextInt();
-        int k = reader.nextInt();
-        double result = Math.pow(n, k) % k;
-        System.out.println(result);
+        long N = reader.nextLong();
+        long C = reader.nextLong();
+        long R = reader.nextLong();
+
+        double low = 0.0;
+        double high = 1.0;
+        double mid = 0.0;
+
+        while (high - low > 1e-7) {
+            mid = (low + high) / 2.0;
+            double value = C;
+            for (int i = 0; i < N; i++) {
+                value *= (1 - (mid - mid * i / N));
+            }
+            if (value > R) {
+                low = mid;
+            } else {
+                high = mid;
+            }
+        }
+        System.out.printf("%.7f\n", mid);
+
     }
 
     static class InputReader {
