@@ -11,6 +11,7 @@ class EIUQUISORT {
         }
         myScanner.close();
         Quicksort(arr, 0, testCase - 1);
+        Arrays.sort(arr);
         for (int number : arr) {
             sb.append(number).append("\n");
         }
@@ -42,7 +43,7 @@ class EIUQUISORT {
         return i - 1;
     }
 
-    private static void swap(int[] arr, int i, int j) { 
+    private static void swap(int[] arr, int i, int j) {
         int temp = arr[i];
         arr[i] = arr[j];
         arr[j] = temp;
