@@ -5,31 +5,39 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class LOGGING {
+public class EIULOGGING2 {
     static StringBuilder sb = new StringBuilder();
     static InputReader reader = new InputReader(System.in);
 
     public static void main(String[] args) {
         int n = reader.nextInt();
         long[] trees = new long[n];
-
+        
+        // Read tree values
         for (int i = 0; i < n; i++) {
             trees[i] = reader.nextLong();
         }
-
-        long[] maxValue = new long[n];
-
-        maxValue[0] = Math.max(0, trees[0]);
-        if (n > 1) {
-            maxValue[1] = Math.max(maxValue[0], Math.max(0, trees[1]));
-        }
-
-        for (int i = 2; i < n; i++) {
-            maxValue[i] = Math.max(maxValue[i - 1], maxValue[i - 2] + Math.max(0, trees[i]));
+        
+        // dp[i] represents the maximum money that can be earned up to index i
+        long[] dp = new long[n];
+        
+        // Base cases
+        if (n >= 1) dp[0] = Math.max(0, trees[0]);
+        if (n >= 2) dp[1] = Math.max(dp[0], Math.max(0, trees[1]));
+        if (n >= 3) dp[2] = Math.max(dp[1], Math.max(0, trees[2]));
+        
+        // Fill dp array
+        for (int i = 3; i < n; i++) {
+            // Don't cut current tree
+            dp[i] = dp[i-1];
+            
+            // Cut current tree if profitable
+            if (trees[i] > 0) {
+                dp[i] = Math.max(dp[i], dp[i-3] + trees[i]);
+            }
         }
         
-        sb.append(maxValue[n - 1]);
-        System.out.println(sb);
+        System.out.println(dp[n-1]);
     }
 
     static class InputReader {

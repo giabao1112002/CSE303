@@ -5,33 +5,48 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class LOGGING {
+public class EIUGAME {
     static StringBuilder sb = new StringBuilder();
     static InputReader reader = new InputReader(System.in);
 
     public static void main(String[] args) {
         int n = reader.nextInt();
-        long[] trees = new long[n];
-
+        int m = reader.nextInt();
+        
+        // Read the matrix
+        long[][] matrix = new long[n][m];
         for (int i = 0; i < n; i++) {
-            trees[i] = reader.nextLong();
-        }
-
-        long[] maxValue = new long[n];
-
-        maxValue[0] = Math.max(0, trees[0]);
-        if (n > 1) {
-            maxValue[1] = Math.max(maxValue[0], Math.max(0, trees[1]));
-        }
-
-        for (int i = 2; i < n; i++) {
-            maxValue[i] = Math.max(maxValue[i - 1], maxValue[i - 2] + Math.max(0, trees[i]));
+            for (int j = 0; j < m; j++) {
+                matrix[i][j] = reader.nextLong();
+            }
         }
         
-        sb.append(maxValue[n - 1]);
-        System.out.println(sb);
+        // DP array to store maximum sum paths
+        long[][] dp = new long[n][m];
+        
+        // Initialize first cell
+        dp[0][0] = matrix[0][0];
+        
+        // Fill first row
+        for (int j = 1; j < m; j++) {
+            dp[0][j] = dp[0][j-1] + matrix[0][j];
+        }
+        
+        // Fill first column
+        for (int i = 1; i < n; i++) {
+            dp[i][0] = dp[i-1][0] + matrix[i][0];
+        }
+        
+        // Fill rest of the dp array
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < m; j++) {
+                dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]) + matrix[i][j];
+            }
+        }
+        
+        // Print the result
+        System.out.println(dp[n-1][m-1]);
     }
-
     static class InputReader {
         StringTokenizer tokenizer;
         BufferedReader reader;
