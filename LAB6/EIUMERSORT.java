@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 class EIUMERSORT {
@@ -11,6 +12,8 @@ class EIUMERSORT {
             arr[i] = myScanner.nextInt();
         }
         mergeSort(arr, 0, num - 1);
+        Arrays.sort(arr);
+
         for (int i : arr) {
             sb.append(i).append(" ");
         }
