@@ -3,20 +3,58 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.StringTokenizer;
 
-public class EIQUEENS {
+class EIQUEEN {
     static StringBuilder sb = new StringBuilder();
     static InputReader reader = new InputReader(System.in);
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws IOException {
         char[][] board = new char[8][8];
 
         for (int i = 0; i < 8; i++) {
-            String line = reader.next();
-            board[i] = line.toCharArray();
+            board[i] = reader.nextLine().toCharArray();
         }
+
+        Set<Integer> columns = new HashSet<>();
+        Set<Integer> majorDiagonals = new HashSet<>();
+        Set<Integer> minorDiagonals = new HashSet<>();
+
+        for (int row = 0; row < 8; row++) {
+            int queensInRow = 0; //
+            for (int col = 0; col < 8; col++) {
+                if (board[row][col] == '*') {
+                    queensInRow++;
+
+                    if (columns.contains(col)) {
+                        System.out.println("invalid");
+                        return;
+                    }
+
+                    int majorDiag = row - col;
+                    int minorDiag = row + col;
+                    if (majorDiagonals.contains(majorDiag) || minorDiagonals.contains(minorDiag)) {
+                        System.out.println("invalid");
+                        return;
+                    }
+
+                    columns.add(col);
+                    majorDiagonals.add(majorDiag);
+                    minorDiagonals.add(minorDiag);
+                }
+            }
+            if (queensInRow != 1) {
+                System.out.println("invalid");
+                return;
+            }
+        }
+
+        System.out.println("valid");
     }
-     static class InputReader {
+
+    static class InputReader {
         StringTokenizer tokenizer;
         BufferedReader reader;
         String token;

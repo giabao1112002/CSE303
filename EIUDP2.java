@@ -3,25 +3,57 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.StringTokenizer;
 
-public class EIJUMP {
+public class EIUDP2 {
     static StringBuilder sb = new StringBuilder();
     static InputReader reader = new InputReader(System.in);
 
     public static void main(String[] args) {
-        int n = reader.nextInt();
-        HashMap<Integer, Integer> myMap = new HashMap<>();
-        int[] dp = new int[n + 1];
-        dp[0] = -1;
-        for (int i = 1; i <= n; i++) {
-            int value = reader.nextInt();
-            dp[i] = Math.min(dp[i - 1] + 1, myMap.getOrDefault(value, Integer.MAX_VALUE - 1) + 1);
-            myMap.put(value, dp[i]);
+        try {
+            int T = reader.nextInt();
+            while (T-- > 0) {
+                solve();
+            }
+            System.out.println(sb);
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+            e.printStackTrace();
         }
-        System.out.println(dp[n]);
+    }
+
+    static void solve() {
+        int n = reader.nextInt();
+        int k = reader.nextInt();
+        
+        long[] arr = new long[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = reader.nextLong();
+        }
+
+        // dp[i] represents maximum earnings up to index i
+        long[] dp = new long[n + 1];
+        
+        // For each position, try all possible work periods ending at this position
+        for (int i = 1; i <= n; i++) {
+            // Don't work at this position
+            dp[i] = dp[i - 1];
+            
+            // Try all possible work periods of length 1 to k ending at position i
+            long sum = 0;
+            for (int j = 0; j < k && i - j > 0; j++) {
+                sum += arr[i - j - 1];
+                // If we can work (have enough rest before this period)
+                if (i - j - k - 1 >= 0) {
+                    dp[i] = Math.max(dp[i], dp[i - j - k - 1] + sum);
+                } else if (i - j - 1 == 0) {
+                    // If this is the first work period
+                    dp[i] = Math.max(dp[i], sum);
+                }
+            }
+        }
+
+        sb.append(dp[n]).append("\n");
     }
 
     static class InputReader {

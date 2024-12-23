@@ -1,85 +1,97 @@
 package LAB3;
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.StringTokenizer;
 
 class EIUSUBSET {
-    static StringBuilder sb = new StringBuilder();
-    static InputReader reader = new InputReader(System.in);
-
     public static void main(String[] args) {
-        String line = reader.next();
-        TreeSet<String> mySet = new TreeSet<String>();
-        mySet.add("");
+        Reader reader = new Reader(System.in);
+        StringBuilder stringBuilder = new StringBuilder();
+        
+        int n = reader.nextInt();
+        List<String> set = new ArrayList<>();
 
-        for (int i = 0; i < line.length(); i++) {
-            TreeSet<String> set = new TreeSet<String>();
-            for (String string : mySet) {
-                for (int j = 0; j <= string.length(); j++) {
-                    String newLine = string.substring(0, j) + line.charAt(i) + string.substring(j);
-                    set.add(newLine);
-                }
+        for (int i = 0; i <n; i++) {
+            set.add(reader.next());
+        
+        }
+        
+        List<String> rs = new ArrayList<>(); 
+        rs.add(""); 
+        Collections.reverse(set); 
+
+        for (String m : set) { 
+            List<String> temp = new ArrayList<>(); 
+            for (String num : rs) {
+                if (num.length() == 0)
+                    temp.add(m + num);
+                else
+                    temp.add(m + " " + num);
             }
-            mySet = set;
+            rs.addAll(temp); 
+        }
+        rs.remove(0); 
+        stringBuilder.append(rs.size()).append('\n'); 
+       
+
+        for (String string : rs) {
+            stringBuilder.append(string).append('\n'); 
         }
 
-        sb.append(mySet.size() + "\n");
-        for (String output : mySet) {
-            sb.append(output + "\n");
-        }
-        System.out.println(sb);
+        System.out.print(stringBuilder);
+    }
+}
+
+class Reader {
+    StringTokenizer tokenizer;
+    BufferedReader reader;
+    String token;
+    String temp;
+
+    public Reader(InputStream stream) {
+        tokenizer = null;
+        reader = new BufferedReader(new InputStreamReader(stream));
     }
 
-    static class InputReader {
-        StringTokenizer tokenizer;
-        BufferedReader reader;
-        String token;
-        String temp;
+    public Reader(FileInputStream stream) {
+        tokenizer = null;
+        reader = new BufferedReader(new InputStreamReader(stream));
+    }
 
-        public InputReader(InputStream stream) {
-            tokenizer = null;
-            reader = new BufferedReader(new InputStreamReader(stream));
-        }
+    public String nextLine() throws IOException {
+        return reader.readLine();
+    }
 
-        public InputReader(FileInputStream stream) {
-            tokenizer = null;
-            reader = new BufferedReader(new InputStreamReader(stream));
-        }
-
-        public String nextLine() throws IOException {
-            return reader.readLine();
-        }
-
-        public String next() {
-            while (tokenizer == null || !tokenizer.hasMoreTokens()) {
-                try {
-                    if (temp != null) {
-                        tokenizer = new StringTokenizer(temp);
-                        temp = null;
-                    } else {
-                        tokenizer = new StringTokenizer(reader.readLine());
-                    }
-                } catch (IOException e) {
+    public String next() {
+        while (tokenizer == null || !tokenizer.hasMoreTokens()) {
+            try {
+                if (temp != null) {
+                    tokenizer = new StringTokenizer(temp);
+                    temp = null;
+                } else {
+                    tokenizer = new StringTokenizer(reader.readLine());
                 }
+            } catch (IOException e) {
             }
-            return tokenizer.nextToken();
         }
+        return tokenizer.nextToken();
+    }
 
-        public double nextDouble() {
-            return Double.parseDouble(next());
-        }
+    public double nextDouble() {
+        return Double.parseDouble(next());
+    }
 
-        public int nextInt() {
-            return Integer.parseInt(next());
-        }
+    public int nextInt() {
+        return Integer.parseInt(next());
+    }
 
-        public long nextLong() {
-            return Long.parseLong(next());
-        }
+    public long nextLong() {
+        return Long.parseLong(next());
     }
 }
