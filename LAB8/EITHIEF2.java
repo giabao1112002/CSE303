@@ -1,3 +1,5 @@
+package LAB8;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -5,45 +7,45 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class EIULOGGING3 {
+public class EITHIEF2 {
     static StringBuilder sb = new StringBuilder();
     static InputReader reader = new InputReader(System.in);
-    static final int MOD = 1000000007;
 
     public static void main(String[] args) {
-        int n = reader.nextInt();
-        long[] trees = new long[n];
+        int N = reader.nextInt();
+        int P = reader.nextInt();
+        Item[] stItems = new Item[N];
+        
+        for (int i = 0; i < N; i++) {
+            int weight = reader.nextInt();
+            int value = reader.nextInt();
+            stItems[i] = new Item(weight, value);
+        }
+
+        int maxValue = knapsack(stItems, N, P);
+        System.out.println(maxValue);
+    }
+
+    private static int knapsack(Item[] items, int n, int capacity) {
+        int[] dp = new int[capacity + 1];
 
         for (int i = 0; i < n; i++) {
-            trees[i] = reader.nextLong();
-        }
-
-        long[] maxValue = new long[n];
-        long[] ways = new long[n];
-
-        maxValue[0] = Math.max(0, trees[0]);
-        ways[0] = 1;
-
-        if (n > 1) {
-            maxValue[1] = Math.max(maxValue[0], Math.max(0, trees[1]));
-            ways[1] = 1;
-        }
-
-        for (int i = 2; i < n; i++) {
-            if (maxValue[i - 1] > maxValue[i - 2] + trees[i]) {
-                maxValue[i] = maxValue[i - 1];
-                ways[i] = ways[i - 1];
-            } else if (maxValue[i - 1] < maxValue[i - 2] + trees[i]) {
-                maxValue[i] = maxValue[i - 2] + trees[i];
-                ways[i] = ways[i - 2];
-            } else {
-                maxValue[i] = maxValue[i - 1];
-                ways[i] = (ways[i - 1] + ways[i - 2]) % MOD;
+            for (int w = capacity; w >= items[i].weight; w--) {
+                dp[w] = Math.max(dp[w], dp[w - items[i].weight] + items[i].value);
             }
         }
 
-        sb.append(maxValue[n - 1]).append(" ").append(ways[n - 1]);
-        System.out.println(sb);
+        return dp[capacity];
+    }
+
+    static class Item {
+        int weight;
+        int value;
+
+        public Item(int weight, int value) {
+            this.value = value;
+            this.weight = weight;
+        }
     }
 
     static class InputReader {

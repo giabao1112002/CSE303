@@ -1,40 +1,31 @@
-package LAB4;
+package LAB8;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class EISUBSET2 {
+public class EIUMINDIST {
     static StringBuilder sb = new StringBuilder();
     static InputReader reader = new InputReader(System.in);
 
     public static void main(String[] args) {
-        int n = reader.nextInt();
-        int k = reader.nextInt();
-        int[] arr = new int[n];
-        for (int i = 0; i < n; i++) {
-            arr[i] = reader.nextInt();
+        int N =reader.nextInt();
+        int K =reader.nextInt();
+        int [] arr =new int[N];
+        for(int i=0;i<N;i++){
+            arr[i]=reader.nextInt();
         }
-        
-        int count = countSubsets(arr, n, k);
-        System.out.println(count);
-    }
+        Arrays.sort(arr);
+        if(N==K){
+            System.out.println(arr[1]-arr[0]);
+        }else{
+            System.out.println(arr[N-1]-arr[N-2]);
 
-    private static int countSubsets(int[] arr, int n, int k) {
-        return countSubsetsUtil(arr, n, k, 0);
-    }
-
-    private static int countSubsetsUtil(int[] arr, int n, int k, int index) {
-        if (k == 0) return 1;
-        if (index == n || k < 0) return 0;
-
-        int include = countSubsetsUtil(arr, n, k - arr[index], index + 1);
-        int exclude = countSubsetsUtil(arr, n, k, index + 1);
-
-        return include + exclude;
+        }
     }
 
     static class InputReader {

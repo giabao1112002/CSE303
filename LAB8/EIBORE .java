@@ -1,40 +1,38 @@
-package LAB4;
+package LAB8;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 
-public class EISUBSET2 {
-    static StringBuilder sb = new StringBuilder();
+class EIBORE {
     static InputReader reader = new InputReader(System.in);
+    static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) {
         int n = reader.nextInt();
-        int k = reader.nextInt();
-        int[] arr = new int[n];
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int[] dp = new int[100000 + 1];
+
         for (int i = 0; i < n; i++) {
-            arr[i] = reader.nextInt();
+            int item = reader.nextInt();
+            if (map.containsKey(item)) {
+                map.put(item, map.get(item) + 1);
+            } else {
+                map.put(item, 1);
+            }
         }
-        
-        int count = countSubsets(arr, n, k);
-        System.out.println(count);
-    }
 
-    private static int countSubsets(int[] arr, int n, int k) {
-        return countSubsetsUtil(arr, n, k, 0);
-    }
+        dp[1] = map.getOrDefault(1, 0);
 
-    private static int countSubsetsUtil(int[] arr, int n, int k, int index) {
-        if (k == 0) return 1;
-        if (index == n || k < 0) return 0;
+        for (int i = 2; i <= 100000; i++) {
+            dp[i] = Math.max(dp[i - 2] + i * map.getOrDefault(i, 0), dp[i - 1]);
+        }
 
-        int include = countSubsetsUtil(arr, n, k - arr[index], index + 1);
-        int exclude = countSubsetsUtil(arr, n, k, index + 1);
-
-        return include + exclude;
+        System.out.println(dp[100000]);
     }
 
     static class InputReader {

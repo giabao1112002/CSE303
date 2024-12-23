@@ -1,5 +1,4 @@
-package LAB4;
-
+package LAB8;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -7,34 +6,46 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class EISUBSET2 {
+public class EIULOGGING3 {
     static StringBuilder sb = new StringBuilder();
     static InputReader reader = new InputReader(System.in);
+    static final int MOD = 1000000007;
 
     public static void main(String[] args) {
         int n = reader.nextInt();
-        int k = reader.nextInt();
-        int[] arr = new int[n];
+        long[] trees = new long[n];
+
         for (int i = 0; i < n; i++) {
-            arr[i] = reader.nextInt();
+            trees[i] = reader.nextLong();
         }
+
+        long[] maxValue = new long[n];
+        long[] ways = new long[n];
+
+        maxValue[0] = Math.max(0, trees[0]);
         
-        int count = countSubsets(arr, n, k);
-        System.out.println(count);
-    }
+        
 
-    private static int countSubsets(int[] arr, int n, int k) {
-        return countSubsetsUtil(arr, n, k, 0);
-    }
+        if (n > 1) {
+            maxValue[1] = Math.max(maxValue[0], Math.max(0, trees[1]));
+            ways[1] = 1;
+        }
 
-    private static int countSubsetsUtil(int[] arr, int n, int k, int index) {
-        if (k == 0) return 1;
-        if (index == n || k < 0) return 0;
+        for (int i = 2; i < n; i++) {
+            if (maxValue[i - 1] > maxValue[i - 2] + trees[i]) {
+                maxValue[i] = maxValue[i - 1];
+                ways[i] = ways[i - 1];
+            } else if (maxValue[i - 1] < maxValue[i - 2] + trees[i]) {
+                maxValue[i] = maxValue[i - 2] + trees[i];
+                ways[i] = ways[i - 2];
+            } else {
+                maxValue[i] = maxValue[i - 1];
+                ways[i] = (ways[i - 1] + ways[i - 2]) % MOD;
+            }
+        }
 
-        int include = countSubsetsUtil(arr, n, k - arr[index], index + 1);
-        int exclude = countSubsetsUtil(arr, n, k, index + 1);
-
-        return include + exclude;
+        sb.append(maxValue[n - 1]).append(" ").append(ways[n - 1]);
+        System.out.println(sb);
     }
 
     static class InputReader {
